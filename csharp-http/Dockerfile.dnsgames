@@ -2,8 +2,9 @@
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 WORKDIR /source
 
-# copy csproj 
-COPY *.csproj .
+ADD .gen/httpserver scripts/dnsgames_init /
+ADD csharp-http/Program.cs /
+ADD csharp-http/Dns.csproj /
 
 # copy and publish app and libraries
 COPY . .
@@ -13,7 +14,6 @@ RUN dotnet publish Dns.csproj -c release -o /app --no-restore
 FROM mcr.microsoft.com/dotnet/runtime:5.0
 WORKDIR /app
 COPY --from=build /app .
-ADD .gen/httpserver scripts/dnsgames_init /
 
 ENTRYPOINT ["/dnsgames_init"]
 RUN dotnet run Dns.dll
