@@ -7,7 +7,7 @@ COPY *.csproj .
 
 # copy and publish app and libraries
 COPY . .
-RUN dotnet publish -c release -o /app --no-restore
+RUN dotnet publish Dns.csproj -c release -o /app --no-restore --project=
 
 # final stage/image
 FROM mcr.microsoft.com/dotnet/runtime:5.0
